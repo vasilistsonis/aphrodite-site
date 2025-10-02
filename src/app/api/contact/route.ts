@@ -1,10 +1,13 @@
+// src/app/api/contact/route.ts
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+
+// Force Node runtime (Resend SDK likes Node)
 export const runtime = "nodejs";
 
-const resendKey = process.env.RESEND_API_KEY;
-const toEmail = process.env.CONTACT_TO_EMAIL;
-const fromEmail = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
+const resendKey  = process.env.RESEND_API_KEY!;
+const toEmail    = process.env.CONTACT_TO_EMAIL!;
+const fromEmail  = process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev";
 
 const resend = new Resend(resendKey);
 
@@ -14,7 +17,7 @@ type ContactPayload = {
   phone?: string;
   message: string;
   company?: string; // honeypot
-  ts?: string;      // millisecond timestamp
+  ts?: string;      // ms timestamp
 };
 
 function json(data: unknown, status = 200) {
@@ -23,32 +26,30 @@ function json(data: unknown, status = 200) {
 
 export async function POST(req: Request) {
   try {
-    if (!resendKey || !toEmail || !fromEmail) {
-      return json({ ok: false, error: "Missing email environment variables." }, 500);
-    }
-
-    let body: Partial<ContactPayload> = {};
+    // --- parse body safely ---
+    let body: ContactPayload;
     try {
-      body = (await req.json()) as Partial<ContactPayload>;
+      body = (await req.json()) as ContactPayload;
     } catch {
       return json({ ok: false, error: "Invalid JSON body." }, 400);
     }
 
-    const name = String(body.name || "").trim();
-    const email = String(body.email || "").trim();
-    const message = String(body.message || "").trim();
-    const phone = body.phone ? String(body.phone) : "";
+    const name  = (body.name || "").trim();
+    const email = (body.email || "").trim();
+    const phone = (body.phone || "").trim();
+    const message = (body.message || "").trim();
     const company = body.company ? String(body.company) : "";
     const ts = body.ts ? Number(body.ts) : 0;
 
-    // Honeypot / too-fast checks
-    if (company) return json({ ok: true });
-    if (ts && Date.now() - ts < 1500) return json({ ok: true });
+    // honeypot / too-fast checks
+    if (company) return json({ ok: true });              // bots get success silently
+    if (ts && Date.now() - ts < 1500) return json({ ok: true }); // too fast => likely bot
 
     if (!name || !email || !message) {
       return json({ ok: false, error: "Name, email and message are required." }, 400);
     }
 
+    // ✅ use backticks so values interpolate
     const subject = `New inquiry — Aphrodite Residences (${name})`;
     const text = [
       `Name: ${name}`,
@@ -57,25 +58,18 @@ export async function POST(req: Request) {
       "",
       message,
     ].filter(Boolean).join("\n");
-
     const { error } = await resend.emails.send({
       from: fromEmail,
-      to: [toEmail],
+      to:   toEmail,
       subject,
       text,
-      reply_to: email,
+      replyTo: email,   // ← use replyTo (camelCase)
     });
+    
 
     if (error) return json({ ok: false, error: String(error) }, 500);
-
     return json({ ok: true });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "Unknown error";
-    return json({ ok: false, error: msg }, 500);
+    return json({ ok: false, error: (err as Error).message || "Server error" }, 500);
   }
-}
-
-export async function GET() {
-  // Helpful to confirm the route is deployed
-  return json({ ok: true, endpoint: "/api/contact" });
 }
