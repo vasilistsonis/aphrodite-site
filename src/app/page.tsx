@@ -298,22 +298,47 @@ const Lightbox: React.FC<{
     </div>
   );
 };
-//Function to send email with leads 
 function ContactForm() {
+  // typed status for nicer TS
   const [status, setStatus] =
     React.useState<"idle" | "sending" | "ok" | "error">("idle");
   const [error, setError] = React.useState<string>("");
-  const tsRef = React.useRef<HTMLInputElement>(null); // simple anti-bot timestamp
+  const [showOK, setShowOK] = React.useState(false); // success popup
+  const tsRef = React.useRef<HTMLInputElement>(null); // anti-bot timestamp
 
+  // set timestamp when component mounts
   React.useEffect(() => {
     if (tsRef.current) tsRef.current.value = String(Date.now());
   }, []);
 
+  // ---- Types for the payload we send to /api/contact ----
+  type ContactPayload = {
+    name: string;
+    email: string;
+    phone?: string;
+    message: string;
+    company?: string; // honeypot field (should be empty)
+    ts?: string;      // timestamp string
+  };
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = new FormData(form);
-    const payload = Object.fromEntries(data.entries()); // { name, email, phone, message, company?, ts? }
+
+    // Build a typed payload (no `any`)
+    const formData = new FormData(form);
+    const raw = Object.fromEntries(
+      formData.entries()
+    ) as Record<string, FormDataEntryValue>;
+
+    const payload: ContactPayload = {
+      name: String(raw.name || ""),
+      email: String(raw.email || ""),
+      phone: raw.phone ? String(raw.phone) : undefined,
+      message: String(raw.message || ""),
+      company: raw.company ? String(raw.company) : undefined,
+      ts: raw.ts ? String(raw.ts) : undefined,
+    };
 
     setStatus("sending");
     setError("");
@@ -325,97 +350,133 @@ function ContactForm() {
         body: JSON.stringify(payload),
       });
       const json = await res.json();
-      if (!res.ok || !json.ok) throw new Error(json.error || "Failed to send");
-      setStatus("ok");
+
+      if (!res.ok || !json.ok) {
+        throw new Error(json.error || "Failed to send");
+      }
+
+      // success: clear form, reset timestamp, show popup
       form.reset();
       if (tsRef.current) tsRef.current.value = String(Date.now());
-    } catch (err: any) {
+      setStatus("ok");
+      setShowOK(true);
+      // auto-hide popup after 4s
+      window.setTimeout(() => setShowOK(false), 4000);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong";
       setStatus("error");
-      setError(err?.message || "Something went wrong");
+      setError(msg);
     }
   }
 
+  // basic styles to match your white cards + shadows
+  const inputStyle: React.CSSProperties = {
+    border: "1px solid #D0D5CE",
+    background: "#FFFFFF",
+    color: "#192524",
+  };
+
   return (
-    <form onSubmit={onSubmit} className="grid gap-4">
-      {/* Honeypot: leave blank */}
-      <input
-        type="text"
-        name="company"
-        tabIndex={-1}
-        autoComplete="off"
-        style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0 }}
-        aria-hidden="true"
-      />
-      {/* Timestamp for “too-fast” bot submits */}
-      <input type="hidden" name="ts" ref={tsRef} />
-
-      <div className="grid gap-2">
-        <label className="text-sm" style={{ color: "#3C5759" }}>Full Name</label>
-        <input
-          name="name"
-          required
-          placeholder="Your name"
-          className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-          style={{ border: "1px solid #D0D5CE", background: "#FFFFFF", color: "#192524" }}
-        />
-      </div>
-
-      <div className="grid gap-2">
-        <label className="text-sm" style={{ color: "#3C5759" }}>Email</label>
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder="name@email.com"
-          className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-          style={{ border: "1px solid #D0D5CE", background: "#FFFFFF", color: "#192524" }}
-        />
-      </div>
-
-      <div className="grid gap-2">
-        <label className="text-sm" style={{ color: "#3C5759" }}>Phone</label>
-        <input
-          name="phone"
-          placeholder="+30 …"
-          className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-          style={{ border: "1px solid #D0D5CE", background: "#FFFFFF", color: "#192524" }}
-        />
-      </div>
-
-      <div className="grid gap-2">
-        <label className="text-sm" style={{ color: "#3C5759" }}>Message</label>
-        <textarea
-          name="message"
-          rows={4}
-          required
-          placeholder="Preferred dates, apartment of interest (A3, C1, C2)…"
-          className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-          style={{ border: "1px solid #D0D5CE", background: "#FFFFFF", color: "#192524" }}
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={status==="sending"}
-        className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow"
-        style={{ border: "1px solid #192524", background: "#3C5759", color: "white" }}
-      >
-        {status==="sending" ? "Sending…" : "Submit Request"}
-      </button>
-
-      {status==="ok" && (
-        <p className="text-sm" style={{ color: "green" }}>
-          Thanks! We’ll be in touch shortly.
-        </p>
+    <>
+      {/* Success popup */}
+      {showOK && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
+          <div className="w-[92%] max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <h3 className="text-lg font-semibold">Message sent ✅</h3>
+            <p className="mt-2 text-sm text-gray-600">
+              Thank you! We’ll get back to you shortly.
+            </p>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowOK(false)}
+                className="rounded-xl px-4 py-2 text-sm font-semibold shadow"
+                style={{ border: "1px solid #192524", background: "#3C5759", color: "#fff" }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-      {status==="error" && (
-        <p className="text-sm" style={{ color: "crimson" }}>
-          Error: {error}
-        </p>
-      )}
-    </form>
+
+      {/* Contact form */}
+      <form onSubmit={onSubmit} className="grid gap-4">
+        {/* Honeypot: bots fill this; humans never see it */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0 }}
+          aria-hidden="true"
+        />
+        {/* Timestamp for “too-fast” submissions */}
+        <input type="hidden" name="ts" ref={tsRef} />
+
+        <div className="grid gap-2">
+          <label className="text-sm" style={{ color: "#3C5759" }}>Full Name</label>
+          <input
+            name="name"
+            required
+            placeholder="Your name"
+            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
+            style={inputStyle}
+          />
+        </div>
+
+        <div className="grid gap-2">
+          <label className="text-sm" style={{ color: "#3C5759" }}>Email</label>
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="name@email.com"
+            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
+            style={inputStyle}
+          />
+        </div>
+
+        <div className="grid gap-2">
+          <label className="text-sm" style={{ color: "#3C5759" }}>Phone</label>
+          <input
+            name="phone"
+            placeholder="+30 …"
+            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
+            style={inputStyle}
+          />
+        </div>
+
+        <div className="grid gap-2">
+          <label className="text-sm" style={{ color: "#3C5759" }}>Message</label>
+          <textarea
+            name="message"
+            rows={4}
+            required
+            placeholder="Preferred dates, apartment of interest (A3, C1, C2)…"
+            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
+            style={inputStyle}
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow"
+          style={{ border: "1px solid #192524", background: "#3C5759", color: "white" }}
+        >
+          {status === "sending" ? "Sending…" : "Submit Request"}
+        </button>
+
+        {status === "error" && (
+          <p className="text-sm" style={{ color: "crimson" }}>
+            Error: {error}
+          </p>
+        )}
+      </form>
+    </>
   );
 }
+
 
 
 /* =========================
