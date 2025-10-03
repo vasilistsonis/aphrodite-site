@@ -60,11 +60,13 @@ export async function POST(req: Request) {
     ].filter(Boolean).join("\n");
     const { error } = await resend.emails.send({
       from: fromEmail,
-      to:   toEmail,
+      to: [toEmail],                       // main recipient
+      cc: [process.env.CONTACT_CC!],       // add CC recipient
       subject,
       text,
-      replyTo: email,   // ← use replyTo (camelCase)
+      replyTo: email,
     });
+    
     
 
     if (error) return json({ ok: false, error: String(error) }, 500);
