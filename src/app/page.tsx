@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { PHOTOS, PLANS, ALL_IMAGES } from "./imageList";
+import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight, Mail, Phone } from "lucide-react";
+
 
 /* =========================
    PALETTE (all-white base)
@@ -752,7 +753,6 @@ export default function Page() {
       </Section>
 
       {/* CONTACT */}
-      {/* CONTACT */}
 <Section id="contact">
   <Container>
     <Card className="p-8">
@@ -760,10 +760,10 @@ export default function Page() {
         {/* Left: text + contact info */}
         <div>
           <h2 className="font-serif text-3xl" style={{ color: C.dark }}>
-            Book a Private Viewing
+            Contact Form
           </h2>
           <p className="mt-3" style={{ color: C.teal }}>
-            Leave your details and preferred dates, and we’ll contact you to arrange a private tour.
+            Leave your details and we’ll contact you to as soon as possible for further information.
           </p>
 
           <ul className="mt-6 space-y-2 text-sm" style={{ color: C.sage }}>
@@ -796,30 +796,79 @@ export default function Page() {
         </div>
 
         {/* Right: Google Maps widget (responsive iframe) */}
-        <div className="flex flex-col gap-4">
-          <div
-            className="overflow-hidden rounded-2xl border shadow"
-            style={{ borderColor: C.gray, background: C.white }}
-          >
-            <div className="aspect-[16/9]">
-              <iframe
-                title="Aphrodite Residences Location"
-                src="https://www.google.com/maps?q=Afroditis%2010%20%26%20El.%20Venizelou%2043,%20Voula&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
-            </div>
-          </div>
+       {/* Right: Google Maps widget + contact info (under the map) */}
+<div className="flex flex-col gap-4">
+  <div
+    className="overflow-hidden rounded-2xl border shadow"
+    style={{ borderColor: C.gray, background: C.white }}
+  >
+    <div className="aspect-[16/9]">
+      <iframe
+        title="Aphrodite Residences Location"
+        src="https://www.google.com/maps?q=Afroditis%2010%20%26%20El.%20Venizelou%2043,%20Voula&output=embed"
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        allowFullScreen
+      />
+    </div>
+  </div>
 
-          {/* Optional: a small hint text */}
-          <p className="text-xs" style={{ color: C.sage }}>
-            Tip: Click the address to open directions in Google Maps.
-          </p>
-        </div>
+  {/* Contact details under the map */}
+  <div
+    className="rounded-2xl border p-4 shadow"
+    style={{ borderColor: C.gray, background: C.white }}
+  >
+    <div className="space-y-2 text-sm" style={{ color: C.teal }}>
+      <p className="flex items-center gap-2">
+        { /* remove <Mail /> if you skipped the icon import */ }
+        <Mail className="h-4 w-4" style={{ color: C.teal }} />
+        <span>
+          <strong>Email:</strong>{" "}
+          <a href="mailto:d.tolikas@tolikas.gr" className="underline underline-offset-2">
+            d.tolikas@tolikas.gr
+          </a>
+        </span>
+      </p>
+
+      <p className="flex items-center gap-2">
+        { /* remove <Phone /> if you skipped the icon import */ }
+        <Phone className="h-4 w-4" style={{ color: C.teal }} />
+        <span>
+          <strong>Mobile:</strong>{" "}
+          <a href="tel:+306944665050" className="underline underline-offset-2">
+            +30 6944665050
+          </a>
+        </span>
+      </p>
+
+      <hr className="my-2" style={{ borderColor: C.gray }} />
+
+      <p>
+        <strong>Thessaloniki Office</strong><br />
+        T:{" "}
+        <a href="tel:+302310256311" className="underline underline-offset-2">
+          +30 2310 256311
+        </a>
+      </p>
+
+      <p>
+        <strong>Athens Office</strong><br />
+        T:{" "}
+        <a href="tel:+302111985345" className="underline underline-offset-2">
+          +30 211 1985345
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <p className="text-xs" style={{ color: C.sage }}>
+    Tip: Click the address to open directions in Google Maps.
+  </p>
+</div>
+
       </div>
     </Card>
   </Container>

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Aphrodite Residences — Athens Riviera",
     description:
       "Elegant multi-level apartments in Voula with rooftop pools and private balconies.",
-    url: "https://aphrodite-site.vercel.app", // change to your domain later
+    url: "https://www.gestates.gr", // change to your domain later
     siteName: "Aphrodite Residences",
     images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Aphrodite Residences" }],
     locale: "en_US",
