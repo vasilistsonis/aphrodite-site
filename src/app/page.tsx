@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { PHOTOS, PLANS, ALL_IMAGES } from "./imageList";
-import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight, Mail, Phone } from "lucide-react";
-
 
 /* =========================
    PALETTE (all-white base)
@@ -816,50 +815,26 @@ export default function Page() {
     </div>
   </div>
 
-  {/* Contact details under the map */}
+  {/* Contact details under the map (plain text) */}
   <div
     className="rounded-2xl border p-4 shadow"
     style={{ borderColor: C.gray, background: C.white }}
   >
     <div className="space-y-2 text-sm" style={{ color: C.teal }}>
-      <p className="flex items-center gap-2">
-        { /* remove <Mail /> if you skipped the icon import */ }
-        <Mail className="h-4 w-4" style={{ color: C.teal }} />
-        <span>
-          <strong>Email:</strong>{" "}
-          <a href="mailto:d.tolikas@tolikas.gr" className="underline underline-offset-2">
-            d.tolikas@tolikas.gr
-          </a>
-        </span>
+      <p>
+        <strong>Email:</strong> d.tolikas@tolikas.gr
       </p>
-
-      <p className="flex items-center gap-2">
-        { /* remove <Phone /> if you skipped the icon import */ }
-        <Phone className="h-4 w-4" style={{ color: C.teal }} />
-        <span>
-          <strong>Mobile:</strong>{" "}
-          <a href="tel:+306944665050" className="underline underline-offset-2">
-            +30 6944665050
-          </a>
-        </span>
+      <p>
+        <strong>Mobile:</strong> +30 6944665050
       </p>
-
       <hr className="my-2" style={{ borderColor: C.gray }} />
-
       <p>
         <strong>Thessaloniki Office</strong><br />
-        T:{" "}
-        <a href="tel:+302310256311" className="underline underline-offset-2">
-          +30 2310 256311
-        </a>
+        T: +30 2310 256311
       </p>
-
       <p>
         <strong>Athens Office</strong><br />
-        T:{" "}
-        <a href="tel:+302111985345" className="underline underline-offset-2">
-          +30 211 1985345
-        </a>
+        T: +30 211 1985345
       </p>
     </div>
   </div>
