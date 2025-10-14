@@ -817,27 +817,25 @@ export default function Page() {
 
   {/* Contact details under the map (plain text) */}
   <div
-    className="rounded-2xl border p-4 shadow"
-    style={{ borderColor: C.gray, background: C.white }}
+  className="rounded-2xl border p-4 shadow"
+  style={{ borderColor: C.gray, background: C.white }}
+>
+  <h1
+    className="text-2xl font-serif text-center"
+    style={{ color: C.teal }}
   >
-    <div className="space-y-2 text-sm" style={{ color: C.teal }}>
-      <p>
-        <strong>Email:</strong> d.tolikas@tolikas.gr
-      </p>
-      <p>
-        <strong>Mobile:</strong> +30 6944665050
-      </p>
-      <hr className="my-2" style={{ borderColor: C.gray }} />
-      <p>
-        <strong>Thessaloniki Office</strong><br />
-        T: +30 2310 256311
-      </p>
-      <p>
-        <strong>Athens Office</strong><br />
-        T: +30 211 1985345
-      </p>
-    </div>
+    Omniview
+  </h1>
+  <div className="mt-3 space-y-2 text-sm text-center" style={{ color: C.teal }}>
+    <p>
+      <strong>Email:</strong> d.tolikas@tolikas.gr
+    </p>
+    <p>
+      <strong>Mobile:</strong> +30 6944665050
+    </p>
   </div>
+</div>
+
 
   <p className="text-xs" style={{ color: C.sage }}>
     Tip: Click the address to open directions in Google Maps.
