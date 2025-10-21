@@ -15,7 +15,7 @@ export const PHOTOS: string[] = [
   "page28_img1.jpeg",
   "page29_img1.jpeg",
   "page30_img1.jpeg",
-   "imagec2.jpg"
+   "imagec3.jpg"
 ];
 export const PLANS:  string[] = [
   "page10_img1.png",
