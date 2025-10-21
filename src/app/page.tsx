@@ -199,7 +199,7 @@ const C2: Apt = {
     { label: "Rooftop", value: "19.80 m²" },
     { label: "Balconies", value: "57.05 m² total" },
   ],
-  photos: [pick("page31img1"), pick("page32img1"), pick("page33img1")].filter(Boolean) as string[],
+  photos: [pick("page31img1"), pick("page32img1"),pick("imagec2"), pick("page33img1")].filter(Boolean) as string[],
 };
 
 const APARTMENTS: Apt[] = [A3, C1, C2];
@@ -626,7 +626,7 @@ export default function Page() {
         About the Development
       </h2>
       <p className="mt-4" style={{ color: C.teal }}>
-        Designed by the renowned architectural firm <strong>Omnibus</strong> and constructed by
+        Designed by the renowned architectural firm <strong>Omniview</strong> and constructed by
         <strong> Tolikas Development</strong>, Aphrodite Residences sets a new standard of modern
         living with elegant multi-level apartments, seamless aesthetics, and uncompromising quality.
         Situated in prestigious <strong>Voula</strong> on the Athens Riviera, the project blends a calm
@@ -802,16 +802,17 @@ export default function Page() {
     style={{ borderColor: C.gray, background: C.white }}
   >
     <div className="aspect-[16/9]">
-      <iframe
-        title="Aphrodite Residences Location"
-        src="https://www.google.com/maps?q=Afroditis%2010%20%26%20El.%20Venizelou%2043,%20Voula&output=embed"
-        width="100%"
-        height="100%"
-        style={{ border: 0 }}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        allowFullScreen
-      />
+    <iframe
+  title="Aphrodite Residences Location"
+  src="https://www.google.com/maps?q=Afroditis%2010%20%26%20El.%20Venizelou%2043,%20Voula&output=embed&t=k"
+  width="100%"
+  height="100%"
+  style={{ border: 0 }}
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+  allowFullScreen
+/>
+
     </div>
   </div>
 
