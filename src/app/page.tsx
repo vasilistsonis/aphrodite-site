@@ -199,7 +199,7 @@ const C2: Apt = {
     { label: "Rooftop", value: "19.80 m²" },
     { label: "Balconies", value: "57.05 m² total" },
   ],
-  photos: [pick("page31img1"), pick("page32img1"),pick("imagec2"), pick("page33img1")].filter(Boolean) as string[],
+  photos: [pick("page31img1"), pick("page32img1"),pick("imagec3"), pick("page33img1")].filter(Boolean) as string[],
 };
 
 const APARTMENTS: Apt[] = [A3, C1, C2];
