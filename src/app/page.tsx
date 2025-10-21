@@ -161,7 +161,7 @@ const C1: Apt = {
     { label: "Rooftop", value: "17.50 m²" },
     { label: "Balconies", value: "49.05 m² total" },
   ],
-  photos: [pick("page24img1")!].filter(Boolean),
+  photos: [pick("page24img1"), pick("imagec1")].filter(Boolean) as string[] ,
 };
 
 /* --- C2 --- */
@@ -199,7 +199,7 @@ const C2: Apt = {
     { label: "Rooftop", value: "19.80 m²" },
     { label: "Balconies", value: "57.05 m² total" },
   ],
-  photos: [pick("page31img1"), pick("page32img1"),pick("imagec3"), pick("page33img1")].filter(Boolean) as string[],
+  photos: [pick("page31img1"), pick("page32img1"), pick("page33img1")].filter(Boolean) as string[],
 };
 
 const APARTMENTS: Apt[] = [A3, C1, C2];
