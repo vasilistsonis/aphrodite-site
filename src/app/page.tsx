@@ -166,8 +166,8 @@ const C1: Apt = {
     { label: "Rooftop", value: "17.50 m²" },
     { label: "Balconies", value: "49.05 m² total" },
   ],
- // photos: [pick("page24img1"), pick("imagec1")].filter(Boolean) as string[] ,
-  photos: [pick("page24img1")!].filter(Boolean),
+  photos: [pick("page24img1"), pick("imagepoolc1")].filter(Boolean) as string[] ,
+  
 };
 
 /* --- C2 --- */
@@ -848,7 +848,7 @@ export default function Page() {
       <strong>Email:</strong> d.tolikas@tolikas.gr
     </p>
     <p>
-      <strong>Mobile:</strong> +30 2111985345
+      <strong>Tel:</strong> +302111985345
     </p>
   </div>
 </div>
