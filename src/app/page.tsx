@@ -14,6 +14,11 @@ const C = {
   white: "#FFFFFF",
 };
 
+// --- toggles ---
+const SHOW_PLANS = false;   // hide floor plan thumbnails
+const SHOW_GALLERY = false; // hide the gallery section
+
+
 /* =========================
    UI Primitives
 ========================= */
@@ -161,7 +166,8 @@ const C1: Apt = {
     { label: "Rooftop", value: "17.50 m²" },
     { label: "Balconies", value: "49.05 m² total" },
   ],
-  photos: [pick("page24img1"), pick("imagec1")].filter(Boolean) as string[] ,
+ // photos: [pick("page24img1"), pick("imagec1")].filter(Boolean) as string[] ,
+  photos: [pick("page24img1")!].filter(Boolean),
 };
 
 /* --- C2 --- */
@@ -199,7 +205,7 @@ const C2: Apt = {
     { label: "Rooftop", value: "19.80 m²" },
     { label: "Balconies", value: "57.05 m² total" },
   ],
-  photos: [pick("page31img1"), pick("page32img1"), pick("page33img1")].filter(Boolean) as string[],
+  photos: [pick("page31img1"), pick("imagec1"), pick("page32img1"), pick("page33img1")].filter(Boolean) as string[],
 };
 
 const APARTMENTS: Apt[] = [A3, C1, C2];
@@ -626,11 +632,10 @@ export default function Page() {
         About the Development
       </h2>
       <p className="mt-4" style={{ color: C.teal }}>
-        Designed by the renowned architectural firm <strong>Omniview</strong> and constructed by
-        <strong> Tolikas Development</strong>, Aphrodite Residences sets a new standard of modern
-        living with elegant multi-level apartments, seamless aesthetics, and uncompromising quality.
-        Situated in prestigious <strong>Voula</strong> on the Athens Riviera, the project blends a calm
-        residential feel with effortless access to beaches, cafés, dining, shopping, and major hubs.
+        Conceived and delivered by <strong>Tolikas Development</strong>, Aphrodite Residences represents a new benchmark 
+        in contemporary luxury living. Featuring refined multi-level residences, timeless architecture,and exceptional build quality,
+        the development is located in the prestigious neighborhood of<strong>Voula</strong> 
+        on the <strong>Athens Riviera </strong> — offering tranquility alongside effortless access to beaches, dining, shopping, and key destinations.
       </p>
     </Card>
   </Container>
@@ -654,58 +659,69 @@ export default function Page() {
                 </div>
 
                 {/* Floors */}
-                <div className="px-6 py-6 md:px-8">
-                  {apt.floors.map((f, i) => (
-                    <div key={f.name + i} className="mb-6 grid gap-4 md:grid-cols-3">
-                      <div className="md:col-span-1">
-                        {f.planImage ? (
-                          <img
-                            src={`/images/${f.planImage}`}
-                            alt={`${f.name} plan`}
-                            className="h-64 w-full cursor-zoom-in rounded-xl border bg-white object-contain p-4 shadow"
-                            style={{ borderColor: C.gray }}
-                            onClick={() => lb.open([f.planImage!], 0)}
-                          />
-                        ) : (
-                          <div
-                            className="flex h-64 w-full items-center justify-center rounded-xl border shadow"
-                            style={{ borderColor: C.gray, color: C.sage }}
-                          >
-                            Plan image
-                          </div>
-                        )}
-                      </div>
-                      <div className="md:col-span-2">
-                        <h4 className="mb-2 font-semibold" style={{ color: C.teal }}>
-                          {f.name}
-                        </h4>
-                        <ul className="space-y-2" style={{ color: C.teal }}>
-                          {f.info.map((x, j) => (
-                            <li key={j} className="flex gap-3">
-                              <span
-                                className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
-                                style={{ backgroundColor: C.dark }}
-                              />
-                              {x}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  ))}
+<div className="px-6 py-6 md:px-8">
+  {apt.floors.map((f, i) => {
+    // If plans are hidden, use a single-column layout
+    const wrapperClass = SHOW_PLANS
+      ? "mb-6 grid gap-4 md:grid-cols-3"
+      : "mb-6 grid gap-4";
 
-                  {/* Full description */}
-                  <p className="mt-2 whitespace-pre-line" style={{ color: C.teal }}>
-                    {apt.description}
-                  </p>
+    return (
+      <div key={f.name + i} className={wrapperClass}>
+        {SHOW_PLANS && (
+          <div className="md:col-span-1">
+            {f.planImage ? (
+              <img
+                src={`/images/${f.planImage}`}
+                alt={`${f.name} plan`}
+                className="h-64 w-full cursor-zoom-in rounded-xl border bg-white object-contain p-4 shadow"
+                style={{ borderColor: C.gray }}
+                onClick={() => lb.open([f.planImage!], 0)}
+              />
+            ) : (
+              <div
+                className="flex h-64 w-full items-center justify-center rounded-xl border shadow"
+                style={{ borderColor: C.gray, color: C.sage }}
+              >
+                Plan image
+              </div>
+            )}
+          </div>
+        )}
 
-                  {/* Stats */}
-                  <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-                    {apt.stats.map((s, i) => (
-                      <Stat key={i} label={s.label} value={s.value} />
-                    ))}
-                  </div>
-                </div>
+        <div className={SHOW_PLANS ? "md:col-span-2" : ""}>
+          <h4 className="mb-2 font-semibold" style={{ color: C.teal }}>
+            {f.name}
+          </h4>
+          <ul className="space-y-2" style={{ color: C.teal }}>
+            {f.info.map((x, j) => (
+              <li key={j} className="flex gap-3">
+                <span
+                  className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: C.dark }}
+                />
+                {x}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  })}
+
+  {/* Full description */}
+  <p className="mt-2 whitespace-pre-line" style={{ color: C.teal }}>
+    {apt.description}
+  </p>
+
+  {/* Stats */}
+  <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+    {apt.stats.map((s, i) => (
+      <Stat key={i} label={s.label} value={s.value} />
+    ))}
+  </div>
+</div>
+
 
                 {/* Photos / renders */}
                 {apt.photos.length > 0 && (
@@ -731,6 +747,7 @@ export default function Page() {
       </Section>
 
       {/* GALLERY */}
+      {SHOW_GALLERY && (
       <Section id="gallery">
         <Container>
           <h2 className="mb-6 font-serif text-3xl" style={{ color: C.dark }}>
@@ -749,7 +766,7 @@ export default function Page() {
             ))}
           </div>
         </Container>
-      </Section>
+      </Section>)}
 
       {/* CONTACT */}
 <Section id="contact">
@@ -804,7 +821,7 @@ export default function Page() {
     <div className="aspect-[16/9]">
     <iframe
   title="Aphrodite Residences Location"
-  src="https://www.google.com/maps?q=Afroditis%2010%20%26%20El.%20Venizelou%2043,%20Voula&output=embed&t=k"
+  src="https://www.google.com/maps?q=Afroditis%2010%20%26%20El.%20Venizelou%2043,%20Voula&output=embed"
   width="100%"
   height="100%"
   style={{ border: 0 }}
@@ -825,14 +842,14 @@ export default function Page() {
     className="text-2xl font-serif text-center"
     style={{ color: C.teal }}
   >
-    Omniview
+    Tolikas Development
   </h1>
   <div className="mt-3 space-y-2 text-sm text-center" style={{ color: C.teal }}>
     <p>
       <strong>Email:</strong> d.tolikas@tolikas.gr
     </p>
     <p>
-      <strong>Mobile:</strong> +30 6944665050
+      <strong>Mobile:</strong> +30 2111985345
     </p>
   </div>
 </div>
