@@ -634,8 +634,7 @@ export default function Page() {
       <p className="mt-4" style={{ color: C.teal }}>
         Conceived and delivered by <strong>Tolikas Development</strong>, Aphrodite Residences represents a new benchmark 
         in contemporary luxury living. Featuring refined multi-level residences, timeless architecture,and exceptional build quality,
-        the development is located in the prestigious neighborhood of<strong>Voula</strong> 
-        on the <strong>Athens Riviera </strong> — offering tranquility alongside effortless access to beaches, dining, shopping, and key destinations.
+        the development is located in the prestigious neighborhood of <strong>Voula</strong> on the <strong>Athens Riviera </strong> — offering tranquility alongside effortless access to beaches, dining, shopping, and key destinations.
       </p>
     </Card>
   </Container>
