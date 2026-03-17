@@ -673,13 +673,13 @@ export default function Page() {
               <img
                 src={`/images/${f.planImage}`}
                 alt={`${f.name} plan`}
-                className="h-64 w-full cursor-zoom-in rounded-xl border bg-white object-contain p-4 shadow"
+                className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border bg-white object-contain p-4 shadow"
                 style={{ borderColor: C.gray }}
                 onClick={() => lb.open([f.planImage!], 0)}
               />
             ) : (
               <div
-                className="flex h-64 w-full items-center justify-center rounded-xl border shadow"
+                className="flex aspect-[4/3] w-full items-center justify-center rounded-xl border shadow"
                 style={{ borderColor: C.gray, color: C.sage }}
               >
                 Plan image
@@ -731,7 +731,7 @@ export default function Page() {
                           key={src + i}
                           src={`/images/${src}`}
                           alt={`${apt.key} photo ${i + 1}`}
-                          className="h-64 w-full cursor-zoom-in rounded-xl border object-cover shadow"
+                          className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
                           style={{ borderColor: C.gray }}
                           onClick={() => lb.open(apt.photos, i)}
                         />
@@ -758,7 +758,7 @@ export default function Page() {
                 key={src + i}
                 src={`/images/${src}`}
                 alt={`Gallery ${i + 1}`}
-                className="h-64 w-full cursor-zoom-in rounded-xl border object-cover shadow"
+                className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
                 style={{ borderColor: C.gray, background: C.white }}
                 onClick={() => lb.open(PHOTOS, i)}
               />
@@ -770,8 +770,8 @@ export default function Page() {
       {/* CONTACT */}
 <Section id="contact">
   <Container>
-    <Card className="p-8">
-      <div className="grid items-start gap-8 md:grid-cols-2">
+    <Card className="p-6 md:p-8">
+      <div className="grid gap-8 md:grid-cols-2">
         {/* Left: text + contact info */}
         <div>
           <h2 className="font-serif text-3xl" style={{ color: C.dark }}>
