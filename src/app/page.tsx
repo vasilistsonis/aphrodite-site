@@ -535,7 +535,7 @@ export default function Page() {
             APHRODITE RESIDENCES
           </a>
           <div className="hidden gap-6 md:flex">
-            {["About", "Map", "Apartments", "Gallery", "Contact"].map((label) => (
+            {["About", "Map", "Apartments", "Contact"].map((label) => (
               <a key={label} href={`#${label.toLowerCase()}`} className="text-sm" style={{ color: C.sage }}>
                 {label}
               </a>
