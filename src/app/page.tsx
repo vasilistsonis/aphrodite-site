@@ -41,7 +41,7 @@ const Container: React.FC<ContainerProps> = ({ className = "", children }) => (
 type CardProps = { className?: string; children: React.ReactNode };
 const Card: React.FC<CardProps> = ({ className = "", children }) => (
   <div
-    className={`reveal rounded-2xl border p-6 shadow-lg will-change-transform ${className}`}
+    className={`reveal rounded-3xl border p-6 shadow-[0_4px_32px_0_rgba(25,37,36,0.07)] will-change-transform ${className}`}
     style={{
       borderColor: C.gray,
       background: C.white,
@@ -55,11 +55,11 @@ const Card: React.FC<CardProps> = ({ className = "", children }) => (
 
 type StatProps = { label: string; value: string };
 const Stat: React.FC<StatProps> = ({ label, value }) => (
-  <div className="flex flex-col items-start gap-1">
-    <span className="text-xs uppercase tracking-wider" style={{ color: C.teal }}>
+  <div className="flex flex-col items-start gap-1 border-l-2 pl-3" style={{ borderColor: C.gray }}>
+    <span className="text-[10px] uppercase tracking-[0.15em] font-medium" style={{ color: C.sage }}>
       {label}
     </span>
-    <span className="text-lg font-semibold" style={{ color: C.dark }}>
+    <span className="text-base font-semibold leading-snug" style={{ color: C.dark }}>
       {value}
     </span>
   </div>
@@ -378,8 +378,9 @@ function ContactForm() {
   // basic styles to match your white cards + shadows
   const inputStyle: React.CSSProperties = {
     border: "1px solid #D0D5CE",
-    background: "#FFFFFF",
+    background: "#F9FAFA",
     color: "#192524",
+    transition: "border-color .2s, box-shadow .2s",
   };
 
   return (
@@ -419,58 +420,62 @@ function ContactForm() {
         {/* Timestamp for “too-fast” submissions */}
         <input type="hidden" name="ts" ref={tsRef} />
 
-        <div className="grid gap-2">
-          <label className="text-sm" style={{ color: "#3C5759" }}>Full Name</label>
-          <input
-            name="name"
-            required
-            placeholder="Your name"
-            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-            style={inputStyle}
-          />
-        </div>
+          <div className="grid gap-2">
+            <label className="text-xs uppercase tracking-[0.12em] font-medium" style={{ color: C.sage }}>Full Name</label>
+            <input
+              name="name"
+              required
+              placeholder="Your name"
+              className="rounded-xl px-4 py-3 text-sm outline-none"
+              style={inputStyle}
+            />
+          </div>
 
-        <div className="grid gap-2">
-          <label className="text-sm" style={{ color: "#3C5759" }}>Email</label>
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="name@email.com"
-            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-            style={inputStyle}
-          />
-        </div>
+          <div className="grid gap-2">
+            <label className="text-xs uppercase tracking-[0.12em] font-medium" style={{ color: C.sage }}>Email</label>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="name@email.com"
+              className="rounded-xl px-4 py-3 text-sm outline-none"
+              style={inputStyle}
+            />
+          </div>
 
-        <div className="grid gap-2">
-          <label className="text-sm" style={{ color: "#3C5759" }}>Phone</label>
-          <input
-            name="phone"
-            placeholder="+30 …"
-            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-            style={inputStyle}
-          />
-        </div>
+          <div className="grid gap-2">
+            <label className="text-xs uppercase tracking-[0.12em] font-medium" style={{ color: C.sage }}>Phone</label>
+            <input
+              name="phone"
+              placeholder="+30 …"
+              className="rounded-xl px-4 py-3 text-sm outline-none"
+              style={inputStyle}
+            />
+          </div>
 
-        <div className="grid gap-2">
-          <label className="text-sm" style={{ color: "#3C5759" }}>Message</label>
-          <textarea
-            name="message"
-            rows={4}
-            required
-            placeholder="Preferred dates, apartment of interest (A3, C1, C2)…"
-            className="rounded-xl px-4 py-3 text-sm outline-none shadow"
-            style={inputStyle}
-          />
-        </div>
+          <div className="grid gap-2">
+            <label className="text-xs uppercase tracking-[0.12em] font-medium" style={{ color: C.sage }}>Message</label>
+            <textarea
+              name="message"
+              rows={4}
+              required
+              placeholder="Preferred dates, apartment of interest (A3, C1, C2)…"
+              className="rounded-xl px-4 py-3 text-sm outline-none"
+              style={inputStyle}
+            />
+          </div>
 
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow"
-          style={{ border: "1px solid #192524", background: "#3C5759", color: "white" }}
+          className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-110 active:scale-[.98] disabled:opacity-60"
+          style={{ background: "#3C5759", color: "white" }}
         >
-          {status === "sending" ? "Sending…" : "Submit Request"}
+          {status === "sending" ? (
+            <><svg className="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>Sending…</>
+          ) : (
+            <>Submit Request<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg></>
+          )}
         </button>
 
         {status === "error" && (
@@ -529,15 +534,24 @@ export default function Page() {
   return (
     <div className="min-h-screen">
       {/* NAV */}
-      <nav className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur" style={{ borderColor: C.gray }}>
-        <Container className="flex items-center justify-between py-3">
-          <a href="#home" className="font-semibold tracking-[0.18em]" style={{ color: C.teal }}>
-            APHRODITE RESIDENCES
+      <nav className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur-md" style={{ borderColor: C.gray }}>
+        <Container className="flex items-center justify-between py-4">
+          <a href="#home" className="font-serif text-xl font-medium tracking-wide" style={{ color: C.dark }}>
+            Aphrodite Residences
           </a>
-          <div className="hidden gap-6 md:flex">
+          <div className="hidden gap-8 md:flex">
             {["About", "Map", "Apartments", "Contact"].map((label) => (
-              <a key={label} href={`#${label.toLowerCase()}`} className="text-sm" style={{ color: C.sage }}>
+              <a
+                key={label}
+                href={`#${label.toLowerCase()}`}
+                className="text-sm font-medium relative group"
+                style={{ color: C.teal }}
+              >
                 {label}
+                <span
+                  className="absolute -bottom-1 left-0 h-px w-0 group-hover:w-full transition-all duration-300"
+                  style={{ background: C.teal }}
+                />
               </a>
             ))}
           </div>
@@ -562,22 +576,48 @@ export default function Page() {
             <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-white/95" />
           </div>
 
+          {/* Slide indicator dots */}
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Slide ${i + 1}`}
+                className={`hero-dot${i === idx ? " active" : ""}`}
+                onClick={() => setIdx(i)}
+              />
+            ))}
+          </div>
+
           {/* Text block */}
           <div className="pointer-events-none absolute inset-0 flex">
-            <Container className="relative z-10 flex h-full flex-col justify-center py-10 md:py-12">
+            <Container className="relative z-10 flex h-full flex-col justify-end py-14 md:py-16">
               <div className="max-w-2xl pointer-events-auto">
-                <h1
-                  className="font-serif text-4xl leading-tight md:text-6xl"
-                  style={{ color: "white", textShadow: "0 2px 12px rgba(0,0,0,.35)" }}
+                <p
+                  className="mb-3 text-xs uppercase tracking-[0.22em] font-medium"
+                  style={{ color: "rgba(255,255,255,.78)" }}
                 >
-                  A Unique Living Experience
+                  Athens Riviera · Voula
+                </p>
+                <h1
+                  className="font-serif text-5xl leading-[1.1] md:text-7xl"
+                  style={{ color: "white", textShadow: "0 2px 16px rgba(0,0,0,.4)" }}
+                >
+                  A Unique Living<br />Experience
                 </h1>
                 <p
-                  className="mt-4 max-w-prose text-base md:text-lg"
-                  style={{ color: "rgba(255,255,255,.94)", textShadow: "0 1px 6px rgba(0,0,0,.3)" }}
+                  className="mt-5 max-w-xl text-base md:text-lg font-light"
+                  style={{ color: "rgba(255,255,255,.88)", textShadow: "0 1px 6px rgba(0,0,0,.28)" }}
                 >
-                  Aphrodite Residences represent absolute luxury and elegance in one of Athens’ most desirable locations.
+                  Absolute luxury and elegance in one of Athens' most desirable locations.
                 </p>
+                <a
+                  href="#apartments"
+                  className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium backdrop-blur-sm"
+                  style={{ background: "rgba(255,255,255,.15)", border: "1px solid rgba(255,255,255,.45)", color: "white" }}
+                >
+                  Explore Residences
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </a>
               </div>
             </Container>
           </div>
@@ -599,21 +639,27 @@ export default function Page() {
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-b from-transparent to-white/95" />
     </div>
 
-    {/* --- Overlay: ONLY 'Location at a Glance' on the right --- */}
+    {/* --- Overlay: Location at a Glance --- */}
     <div className="pointer-events-none absolute inset-0 flex">
-      <Container className="relative z-10 flex h-full items-end justify-end py-6 md:py-8">
-        <div className="pointer-events-auto max-w-xl rounded-2xl border border-white/25 bg-white/12 p-5 backdrop-blur-md md:p-6 shadow-lg">
-          <h3 className="font-serif text-2xl md:text-3xl text-white">Location at a Glance</h3>
-          <p className="mt-3 text-sm md:text-base text-white/95">
-            700m to seafront promenade · 800m to beaches. Within a 10-minute walk:
-            restaurants, cafés, bars, shopping. Athens International Airport ~20 minutes;
-            Port of Piraeus ~25 minutes.
+      <Container className="relative z-10 flex h-full items-end justify-end py-7 md:py-9">
+        <div className="pointer-events-auto max-w-sm rounded-3xl border border-white/20 bg-black/28 p-5 backdrop-blur-md md:p-6 shadow-2xl">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-white/65 mb-1">Location</p>
+          <h3 className="font-serif text-2xl md:text-3xl text-white leading-snug">Location at a Glance</h3>
+          <p className="mt-3 text-sm text-white/85 leading-relaxed">
+            700 m to seafront promenade · 800 m to beaches. Restaurants, cafés &amp; shopping within a 10-min walk.
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-3 text-white/90 md:grid-cols-4">
-            <div><div className="text-xs opacity-80">BEACH</div><div className="font-semibold">800 m</div></div>
-            <div><div className="text-xs opacity-80">SEAFRONT</div><div className="font-semibold">700 m</div></div>
-            <div><div className="text-xs opacity-80">AIRPORT</div><div className="font-semibold">~20 min</div></div>
-            <div><div className="text-xs opacity-80">PIRAEUS</div><div className="font-semibold">~25 min</div></div>
+          <div className="mt-4 grid grid-cols-4 gap-2">
+            {[
+              { label: "Beach",    value: "800 m" },
+              { label: "Seafront", value: "700 m" },
+              { label: "Airport",  value: "~20 min" },
+              { label: "Piraeus",  value: "~25 min" },
+            ].map(({ label, value }) => (
+              <div key={label} className="flex flex-col">
+                <span className="text-[9px] uppercase tracking-widest text-white/55">{label}</span>
+                <span className="text-sm font-semibold text-white mt-0.5">{value}</span>
+              </div>
+            ))}
           </div>
         </div>
       </Container>
@@ -624,17 +670,31 @@ export default function Page() {
 
 
       {/* ABOUT (compact) */}
- {/* ABOUT (merged into ONE card) */}
+ {/* ABOUT */}
 <Section id="about">
   <Container>
-    <Card>
-      <h2 className="font-serif text-3xl" style={{ color: C.dark }}>
+    <Card className="p-8 md:p-10">
+      <span className="accent-line mb-5" />
+      <h2 className="font-serif text-3xl md:text-4xl" style={{ color: C.dark }}>
         About the Development
       </h2>
-      <p className="mt-4" style={{ color: C.teal }}>
-        Conceived and delivered by <a href="https://www.tolikas.gr/about-us/" target="_blank" rel="noopener noreferrer"><strong>Tolikas Development</strong></a>, Aphrodite Residences represents a new benchmark 
-        in contemporary luxury living. Featuring refined multi-level residences, timeless architecture,and exceptional build quality,
-        the development is located in the prestigious neighborhood of <strong>Voula</strong> on the <strong>Athens Riviera </strong> — offering tranquility alongside effortless access to beaches, dining, shopping, and key destinations.
+      <p className="mt-5 text-[15px] leading-relaxed" style={{ color: C.teal }}>
+        Conceived and delivered by{" "}
+        <a
+          href="https://www.tolikas.gr/about-us/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold underline underline-offset-2"
+          style={{ color: C.dark }}
+        >
+          Tolikas Development
+        </a>
+        , Aphrodite Residences represents a new benchmark in contemporary luxury living.
+        Featuring refined multi-level residences, timeless architecture, and exceptional build quality,
+        the development is located in the prestigious neighbourhood of{" "}
+        <strong style={{ color: C.dark }}>Voula</strong> on the{" "}
+        <strong style={{ color: C.dark }}>Athens Riviera</strong> — offering tranquility alongside
+        effortless access to beaches, dining, shopping, and key destinations.
       </p>
     </Card>
   </Container>
@@ -643,7 +703,8 @@ export default function Page() {
       {/* APARTMENTS */}
       <Section id="apartments">
         <Container>
-          <h2 className="mb-8 font-serif text-3xl md:text-4xl" style={{ color: C.dark }}>
+          <span className="accent-line mb-4" />
+          <h2 className="mb-10 font-serif text-3xl md:text-4xl" style={{ color: C.dark }}>
             Apartments
           </h2>
 
@@ -651,8 +712,9 @@ export default function Page() {
             {APARTMENTS.map((apt) => (
               <Card key={apt.key} className="p-0 overflow-hidden">
                 {/* Header */}
-                <div className="border-b px-6 pb-4 pt-7 md:px-8 shadow-sm" style={{ borderColor: C.gray }}>
-                  <h3 className="font-serif text-2xl" style={{ color: C.dark }}>
+                <div className="border-b px-6 pb-5 pt-7 md:px-8" style={{ borderColor: C.gray }}>
+                  <span className="accent-line mb-3" />
+                  <h3 className="font-serif text-2xl md:text-3xl" style={{ color: C.dark }}>
                     {apt.title}
                   </h3>
                 </div>
@@ -692,13 +754,10 @@ export default function Page() {
           <h4 className="mb-2 font-semibold" style={{ color: C.teal }}>
             {f.name}
           </h4>
-          <ul className="space-y-2" style={{ color: C.teal }}>
+          <ul className="space-y-1.5 text-[14px]" style={{ color: C.teal }}>
             {f.info.map((x, j) => (
-              <li key={j} className="flex gap-3">
-                <span
-                  className="mt-2 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: C.dark }}
-                />
+              <li key={j} className="flex items-start gap-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mt-[3px] h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} style={{ color: C.teal }}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 {x}
               </li>
             ))}
@@ -709,12 +768,12 @@ export default function Page() {
   })}
 
   {/* Full description */}
-  <p className="mt-2 whitespace-pre-line" style={{ color: C.teal }}>
+  <p className="mt-4 whitespace-pre-line text-[14px] leading-relaxed italic border-l-2 pl-4" style={{ color: C.sage, borderColor: C.gray }}>
     {apt.description}
   </p>
 
   {/* Stats */}
-  <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+  <div className="mt-7 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4">
     {apt.stats.map((s, i) => (
       <Stat key={i} label={s.label} value={s.value} />
     ))}
@@ -724,17 +783,26 @@ export default function Page() {
 
                 {/* Photos / renders */}
                 {apt.photos.length > 0 && (
-                  <div className="border-t px-6 pb-8 pt-6 md:px-8" style={{ borderColor: C.gray, background: C.white }}>
-                    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                  <div className="border-t px-6 pb-8 pt-6 md:px-8" style={{ borderColor: C.gray }}>
+                    <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
                       {apt.photos.map((src, i) => (
-                        <img
+                        <div
                           key={src + i}
-                          src={`/images/${src}`}
-                          alt={`${apt.key} photo ${i + 1}`}
-                          className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
+                          className="group relative overflow-hidden rounded-2xl border cursor-zoom-in shadow-sm"
                           style={{ borderColor: C.gray }}
                           onClick={() => lb.open(apt.photos, i)}
-                        />
+                        >
+                          <img
+                            src={`/images/${src}`}
+                            alt={`${apt.key} photo ${i + 1}`}
+                            className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+                            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/80 rounded-full p-2">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" /></svg>
+                            </span>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -770,15 +838,16 @@ export default function Page() {
       {/* CONTACT */}
 <Section id="contact">
   <Container>
-    <Card className="p-6 md:p-8">
-      <div className="grid gap-8 md:grid-cols-2">
+    <Card className="p-8 md:p-10">
+      <div className="grid gap-10 md:grid-cols-2">
         {/* Left: text + contact info */}
         <div>
-          <h2 className="font-serif text-3xl" style={{ color: C.dark }}>
-            Contact Form
+          <span className="accent-line mb-5" />
+          <h2 className="font-serif text-3xl md:text-4xl" style={{ color: C.dark }}>
+            Get in Touch
           </h2>
-          <p className="mt-3" style={{ color: C.teal }}>
-            Leave your details and we’ll contact you to as soon as possible for further information.
+          <p className="mt-3 text-[15px]" style={{ color: C.teal }}>
+            Leave your details and we'll contact you as soon as possible.
           </p>
 
           <ul className="mt-6 space-y-2 text-sm" style={{ color: C.sage }}>
@@ -833,29 +902,32 @@ export default function Page() {
   </div>
 
   {/* Contact details under the map (plain text) */}
+    {/* Contact details under the map */}
   <div
-  className="rounded-2xl border p-4 shadow"
-  style={{ borderColor: C.gray, background: C.white }}
->
-  <h1
-    className="text-2xl font-serif text-center"
-    style={{ color: C.teal }}
+    className="rounded-3xl border p-5 shadow-sm"
+    style={{ borderColor: C.gray, background: C.white }}
   >
-    Tolikas Development
-  </h1>
-  <div className="mt-3 space-y-2 text-sm text-center" style={{ color: C.teal }}>
-    <p>
-      <strong>Email:</strong> d.tolikas@tolikas.gr
-    </p>
-    <p>
-      <strong>Tel:</strong> +302111985345
-    </p>
+    <h4
+      className="font-serif text-xl text-center"
+      style={{ color: C.dark }}
+    >
+      Tolikas Development
+    </h4>
+    <div className="mt-3 space-y-1.5 text-sm text-center" style={{ color: C.teal }}>
+      <p>
+        <span style={{ color: C.sage }}>Email</span>{" "}
+        <a href="mailto:d.tolikas@tolikas.gr" className="font-medium underline-offset-2 hover:underline" style={{ color: C.dark }}>d.tolikas@tolikas.gr</a>
+      </p>
+      <p>
+        <span style={{ color: C.sage }}>Tel</span>{" "}
+        <a href="tel:+302111985345" className="font-medium" style={{ color: C.dark }}>+30 211 198 5345</a>
+      </p>
+    </div>
   </div>
-</div>
 
 
   <p className="text-xs" style={{ color: C.sage }}>
-    Tip: Click the address to open directions in Google Maps.
+    Click the address to open directions in Google Maps.
   </p>
 </div>
 
@@ -866,10 +938,14 @@ export default function Page() {
 
       {/* FOOTER */}
       <footer
-        className="border-t py-10 text-center text-sm"
-        style={{ borderColor: C.gray, background: C.white, color: C.teal }}
+        className="border-t py-12"
+        style={{ borderColor: C.gray, background: C.white }}
       >
-        <Container>© {new Date().getFullYear()} Aphrodite Residences · Athens Riviera · Voula</Container>
+        <Container className="flex flex-col items-center gap-3 text-center">
+          <span className="font-serif text-lg" style={{ color: C.dark }}>Aphrodite Residences</span>
+          <span className="text-xs uppercase tracking-[0.18em]" style={{ color: C.sage }}>Athens Riviera · Voula · Greece</span>
+          <span className="text-xs" style={{ color: C.sage }}>© {new Date().getFullYear()} Tolikas Development · All rights reserved</span>
+        </Container>
       </footer>
 
       {/* LIGHTBOX */}
