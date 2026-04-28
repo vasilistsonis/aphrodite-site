@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import { PHOTOS, PLANS, ALL_IMAGES } from "./imageList";
 
 /* =========================
@@ -271,6 +271,11 @@ const Lightbox: React.FC<{
         <X className="h-5 w-5" />
       </button>
       {state.items.length > 1 && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-sm text-white tabular-nums">
+          {state.index + 1} / {state.items.length}
+        </div>
+      )}
+      {state.items.length > 1 && (
         <>
           <button
             aria-label="Previous"
@@ -467,7 +472,7 @@ function ContactForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow"
+          className="inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold shadow transition-opacity hover:opacity-90 disabled:opacity-50"
           style={{ border: "1px solid #192524", background: "#3C5759", color: "white" }}
         >
           {status === "sending" ? "Sending…" : "Submit Request"}
@@ -489,9 +494,10 @@ function ContactForm() {
    Page
 ========================= */
 export default function Page() {
-  // All-white + smooth scroll + REVEAL ON SCROLL for containers
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Set base styles + REVEAL ON SCROLL for containers
   useEffect(() => {
-    document.documentElement.style.scrollBehavior = "smooth";
     document.body.style.backgroundColor = C.white;
     document.body.style.color = C.dark;
 
@@ -536,12 +542,36 @@ export default function Page() {
           </a>
           <div className="hidden gap-6 md:flex">
             {["About", "Map", "Apartments", "Contact"].map((label) => (
-              <a key={label} href={`#${label.toLowerCase()}`} className="text-sm" style={{ color: C.sage }}>
+              <a key={label} href={`#${label.toLowerCase()}`} className="text-sm transition-opacity hover:opacity-70" style={{ color: C.sage }}>
                 {label}
               </a>
             ))}
           </div>
+          <button
+            className="md:hidden rounded-lg p-2 transition-opacity hover:opacity-70"
+            style={{ color: C.teal }}
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </Container>
+        {menuOpen && (
+          <div className="border-t md:hidden" style={{ borderColor: C.gray, background: "rgba(255,255,255,0.97)" }}>
+            {["About", "Map", "Apartments", "Contact"].map((label) => (
+              <a
+                key={label}
+                href={`#${label.toLowerCase()}`}
+                className="block px-5 py-3 text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: C.teal }}
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* HERO — slideshow (no parallax) */}
@@ -562,6 +592,42 @@ export default function Page() {
             <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-transparent to-white/95" />
           </div>
 
+          {/* Slide controls: arrows + dot indicators */}
+          {slides.length > 1 && (
+            <>
+              <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-between px-4">
+                <button
+                  className="pointer-events-auto rounded-full bg-white/20 p-2.5 shadow transition-colors hover:bg-white/40"
+                  onClick={() => setIdx((i) => (i - 1 + slides.length) % slides.length)}
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="h-5 w-5 text-white" />
+                </button>
+                <button
+                  className="pointer-events-auto rounded-full bg-white/20 p-2.5 shadow transition-colors hover:bg-white/40"
+                  onClick={() => setIdx((i) => (i + 1) % slides.length)}
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="h-5 w-5 text-white" />
+                </button>
+              </div>
+              <div className="pointer-events-none absolute bottom-14 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    className="pointer-events-auto h-1.5 rounded-full transition-all duration-300"
+                    style={{
+                      backgroundColor: i === idx ? "white" : "rgba(255,255,255,0.45)",
+                      width: i === idx ? "24px" : "6px",
+                    }}
+                    onClick={() => setIdx(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+
           {/* Text block */}
           <div className="pointer-events-none absolute inset-0 flex">
             <Container className="relative z-10 flex h-full flex-col justify-center py-10 md:py-12">
@@ -578,6 +644,22 @@ export default function Page() {
                 >
                   Aphrodite Residences represent absolute luxury and elegance in one of Athens’ most desirable locations.
                 </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a
+                    href="#apartments"
+                    className="inline-block rounded-xl px-5 py-3 text-sm font-semibold shadow-lg transition-opacity hover:opacity-90"
+                    style={{ background: C.teal, color: "white" }}
+                  >
+                    View Apartments
+                  </a>
+                  <a
+                    href="#contact"
+                    className="inline-block rounded-xl px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
+                    style={{ background: "rgba(255,255,255,0.18)", color: "white", border: "1px solid rgba(255,255,255,0.45)", backdropFilter: "blur(4px)" }}
+                  >
+                    Contact Us
+                  </a>
+                </div>
               </div>
             </Container>
           </div>
@@ -633,7 +715,7 @@ export default function Page() {
       </h2>
       <p className="mt-4" style={{ color: C.teal }}>
         Conceived and delivered by <a href="https://www.tolikas.gr/about-us/" target="_blank" rel="noopener noreferrer"><strong>Tolikas Development</strong></a>, Aphrodite Residences represents a new benchmark 
-        in contemporary luxury living. Featuring refined multi-level residences, timeless architecture,and exceptional build quality,
+        in contemporary luxury living. Featuring refined multi-level residences, timeless architecture, and exceptional build quality,
         the development is located in the prestigious neighborhood of <strong>Voula</strong> on the <strong>Athens Riviera </strong> — offering tranquility alongside effortless access to beaches, dining, shopping, and key destinations.
       </p>
     </Card>
@@ -778,7 +860,7 @@ export default function Page() {
             Contact Form
           </h2>
           <p className="mt-3" style={{ color: C.teal }}>
-            Leave your details and we’ll contact you to as soon as possible for further information.
+            Leave your details and we’ll get back to you as soon as possible.
           </p>
 
           <ul className="mt-6 space-y-2 text-sm" style={{ color: C.sage }}>
@@ -837,18 +919,24 @@ export default function Page() {
   className="rounded-2xl border p-4 shadow"
   style={{ borderColor: C.gray, background: C.white }}
 >
-  <h1
+  <h3
     className="text-2xl font-serif text-center"
     style={{ color: C.teal }}
   >
     Tolikas Development
-  </h1>
+  </h3>
   <div className="mt-3 space-y-2 text-sm text-center" style={{ color: C.teal }}>
     <p>
-      <strong>Email:</strong> d.tolikas@tolikas.gr
+      <strong>Email:</strong>{" "}
+      <a href="mailto:d.tolikas@tolikas.gr" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: C.teal }}>
+        d.tolikas@tolikas.gr
+      </a>
     </p>
     <p>
-      <strong>Tel:</strong> +302111985345
+      <strong>Tel:</strong>{" "}
+      <a href="tel:+302111985345" className="underline underline-offset-2 hover:opacity-70 transition-opacity" style={{ color: C.teal }}>
+        +30 211 198 5345
+      </a>
     </p>
   </div>
 </div>
