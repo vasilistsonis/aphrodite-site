@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { MapPin, Waves, Plane, Ship, X, ChevronLeft, ChevronRight, Menu } from "lucide-react";
-import { PHOTOS, PLANS, ALL_IMAGES } from "./imageList";
+import { PHOTOS, ALL_IMAGES } from "./imageList";
 
 /* =========================
    PALETTE (all-white base)
@@ -96,6 +96,12 @@ type Apt = {
   floors: Floor[];
   stats: { label: string; value: string }[];
   photos: string[];
+};
+
+const APARTMENT_PHOTO_ALT: Record<Apt["key"], string> = {
+  A3: "Apartment A3 interior render at Aphrodite Residences in Voula",
+  C1: "Duplex Apartment C1 luxury residence render with rooftop pool in Voula",
+  C2: "Duplex Apartment C2 luxury residence render at Aphrodite Residences",
 };
 
 /* --- A3 --- */
@@ -301,7 +307,7 @@ const Lightbox: React.FC<{
       )}
       <img
         src={`/images/${src}`}
-        alt="Preview"
+        alt="Large preview of Aphrodite Residences apartment image"
         className="max-h-[85vh] max-w-[92vw] rounded-xl border bg-white object-contain shadow-2xl"
         style={{ borderColor: C.gray }}
         onClick={(e) => e.stopPropagation()}
@@ -582,7 +588,12 @@ export default function Page() {
               <img
                 key={src + i}
                 src={`/images/${src}`}
-                alt="Aphrodite Exterior"
+                alt={
+                  i === 0
+                    ? "Aphrodite Residences luxury apartment building exterior in Voula"
+                    : `Aphrodite Residences luxury apartments image ${i + 1}`
+                }
+                fetchPriority={i === 0 ? "high" : "auto"}
                 className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
                 style={{ opacity: i === idx ? 1 : 0 }}
               />
@@ -636,7 +647,7 @@ export default function Page() {
                   className="font-serif text-4xl leading-tight md:text-6xl"
                   style={{ color: "white", textShadow: "0 2px 12px rgba(0,0,0,.35)" }}
                 >
-                  A Unique Living Experience
+                  Aphrodite Residences in Voula
                 </h1>
                 <p
                   className="mt-4 max-w-prose text-base md:text-lg"
@@ -673,7 +684,7 @@ export default function Page() {
     <div className="relative h-[520px] md:h-[620px]">
       <img
         src={`/images/${MAP_IMAGE ?? ""}`}
-        alt="Map — Athens Riviera"
+        alt="Map showing Aphrodite Residences in Voula on the Athens Riviera"
         className="absolute inset-0 h-full w-full object-cover"
       />
       {/* very light fades */}
@@ -812,7 +823,7 @@ export default function Page() {
                         <img
                           key={src + i}
                           src={`/images/${src}`}
-                          alt={`${apt.key} photo ${i + 1}`}
+                          alt={`${APARTMENT_PHOTO_ALT[apt.key]} ${i + 1}`}
                           className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
                           style={{ borderColor: C.gray }}
                           onClick={() => lb.open(apt.photos, i)}

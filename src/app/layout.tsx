@@ -4,6 +4,10 @@ import "./globals.css";
 
 /* ─── Canonical domain ──────────────────────────────────────────────────── */
 const SITE_URL = "https://www.gestates.gr";
+const SITE_NAME = "Aphrodite Residences";
+const SITE_TITLE = "Aphrodite Residences | Luxury Apartments in Voula, Athens Riviera";
+const SITE_DESCRIPTION =
+  "Exclusive luxury apartments in Voula, Athens Riviera. Explore three multi-level residences from 168 to 269 m2 with private balconies, rooftop pools and premium finishes by Tolikas Development.";
 
 /* ─── JSON-LD structured data ───────────────────────────────────────────── */
 const jsonLd = {
@@ -12,12 +16,16 @@ const jsonLd = {
     {
       "@type": "ApartmentComplex",
       "@id": `${SITE_URL}/#complex`,
-      name: "Aphrodite Residences",
+      name: SITE_NAME,
       alternateName: "Aphrodite Residences Voula",
-      description:
-        "Luxury multi-level apartments in Voula, Athens Riviera. Three exclusive residences — A3, C1 and C2 — featuring private balconies, rooftop pools and refined interiors by Tolikas Development.",
+      description: SITE_DESCRIPTION,
       url: SITE_URL,
-      image: `${SITE_URL}/images/page01_img1.jpeg`,
+      image: [
+        `${SITE_URL}/images/page01_img1.jpeg`,
+        `${SITE_URL}/images/page17_img1.png`,
+        `${SITE_URL}/images/imagepoolc1.png`,
+      ],
+      logo: `${SITE_URL}/favicon.ico`,
       numberOfRooms: "3 to 4",
       floorSize: {
         "@type": "QuantitativeValue",
@@ -45,6 +53,10 @@ const jsonLd = {
         latitude: 37.8432,
         longitude: 23.7783,
       },
+      telephone: "+30-211-198-5345",
+      email: "d.tolikas@tolikas.gr",
+      brand: { "@id": `${SITE_URL}/#organization` },
+      mainEntityOfPage: { "@id": `${SITE_URL}/#webpage` },
       containsPlace: [
         {
           "@type": "Apartment",
@@ -71,6 +83,7 @@ const jsonLd = {
       "@id": `${SITE_URL}/#organization`,
       name: "Tolikas Development",
       url: "https://www.tolikas.gr",
+      logo: `${SITE_URL}/favicon.ico`,
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+30-211-198-5345",
@@ -89,8 +102,33 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
-      name: "Aphrodite Residences",
+      name: SITE_NAME,
       publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/#webpage`,
+      url: SITE_URL,
+      name: SITE_TITLE,
+      description: SITE_DESCRIPTION,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": `${SITE_URL}/#complex` },
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/page01_img1.jpeg`,
+      },
+      inLanguage: "en",
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE_URL,
+          },
+        ],
+      },
     },
   ],
 };
@@ -104,11 +142,15 @@ export const metadata: Metadata = {
   },
 
   title: {
-    default: "Aphrodite Residences — Luxury Apartments | Athens Riviera, Voula",
+    default: SITE_TITLE,
     template: "%s | Aphrodite Residences",
   },
-  description:
-    "Exclusive luxury apartments in Voula, Athens Riviera. Three multi-level residences (168–269 m²) with private balconies, rooftop pools and premium finishes by Tolikas Development.",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "Tolikas Development", url: "https://www.tolikas.gr" }],
+  creator: "Tolikas Development",
+  publisher: "Tolikas Development",
+  category: "Real Estate",
 
   keywords: [
     "Aphrodite Residences",
@@ -137,15 +179,15 @@ export const metadata: Metadata = {
       follow: true,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 
   openGraph: {
-    title: "Aphrodite Residences — Luxury Apartments on the Athens Riviera",
-    description:
-      "Exclusive multi-level apartments in Voula with rooftop pools, private balconies and refined interiors. 168–269 m² residences by Tolikas Development.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
-    siteName: "Aphrodite Residences",
+    siteName: SITE_NAME,
     images: [
       {
         url: "/opengraph-image",   // Next.js auto-generated OG image
@@ -160,16 +202,19 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Aphrodite Residences — Athens Riviera",
-    description:
-      "Exclusive luxury apartments in Voula with rooftop pools & private balconies. 168–269 m² by Tolikas Development.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["/opengraph-image"],
   },
 
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
   },
 };
 
@@ -186,7 +231,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {children}
-        {/* eslint-disable-next-line react/no-danger */}
         <script
           id="json-ld"
           type="application/ld+json"

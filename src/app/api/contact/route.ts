@@ -44,8 +44,9 @@ function json(data: unknown, status = 200) {
 
 function asStringError(e: unknown): string {
   if (typeof e === "string") return e;
-  if (e && typeof e === "object" && "message" in e && typeof (e as any).message === "string") {
-    return (e as any).message as string;
+  if (e && typeof e === "object" && "message" in e) {
+    const { message } = e as { message?: unknown };
+    if (typeof message === "string") return message;
   }
   try {
     return JSON.stringify(e);
