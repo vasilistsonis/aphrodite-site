@@ -45,8 +45,6 @@ const Card: React.FC<CardProps> = ({ className = "", children }) => (
     style={{
       borderColor: C.gray,
       background: C.white,
-      opacity: 0,
-      transform: "translateY(14px)",
     }}
   >
     {children}
@@ -513,9 +511,7 @@ export default function Page() {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             const el = e.target as HTMLElement;
-            el.style.transition = "opacity .6s ease, transform .6s ease";
-            el.style.opacity = "1";
-            el.style.transform = "translateY(0)";
+            el.classList.add("is-visible");
             io.unobserve(el);
           }
         });
@@ -595,6 +591,7 @@ export default function Page() {
                 }
                 fetchPriority={i === 0 ? "high" : "auto"}
                 className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+                data-scroll-image="hero"
                 style={{ opacity: i === idx ? 1 : 0 }}
               />
             ))}
@@ -686,6 +683,7 @@ export default function Page() {
         src={`/images/${MAP_IMAGE ?? ""}`}
         alt="Map showing Aphrodite Residences in Voula on the Athens Riviera"
         className="absolute inset-0 h-full w-full object-cover"
+        data-scroll-image="map"
       />
       {/* very light fades */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/15 via-black/5 to-transparent" />
@@ -772,7 +770,7 @@ export default function Page() {
               <img
                 src={`/images/${f.planImage}`}
                 alt={`${f.name} plan`}
-                className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border bg-white object-contain p-4 shadow"
+                className="media-zoom aspect-[4/3] w-full cursor-zoom-in rounded-xl border bg-white object-contain p-4 shadow"
                 style={{ borderColor: C.gray }}
                 onClick={() => lb.open([f.planImage!], 0)}
               />
@@ -830,7 +828,7 @@ export default function Page() {
                           key={src + i}
                           src={`/images/${src}`}
                           alt={`${APARTMENT_PHOTO_ALT[apt.key]} ${i + 1}`}
-                          className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
+                          className="media-zoom aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
                           style={{ borderColor: C.gray }}
                           onClick={() => lb.open(apt.photos, i)}
                         />
@@ -857,7 +855,7 @@ export default function Page() {
                 key={src + i}
                 src={`/images/${src}`}
                 alt={`Gallery ${i + 1}`}
-                className="aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
+                className="media-zoom aspect-[4/3] w-full cursor-zoom-in rounded-xl border object-cover shadow"
                 style={{ borderColor: C.gray, background: C.white }}
                 onClick={() => lb.open(PHOTOS, i)}
               />

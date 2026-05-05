@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -37,4 +38,58 @@ textarea:focus {
 
 button {
   cursor: pointer;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease,
+    box-shadow 250ms ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.media-zoom {
+  transition:
+    transform 450ms ease,
+    box-shadow 450ms ease,
+    filter 450ms ease;
+}
+
+.media-zoom:hover {
+  transform: scale(1.018);
+  filter: saturate(1.04) contrast(1.02);
+  box-shadow: 0 18px 40px rgb(25 37 36 / 14%);
+}
+
+[data-scroll-image="hero"],
+[data-scroll-image="map"] {
+  transform: scale(1.015);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .media-zoom:hover,
+  [data-scroll-image="hero"],
+  [data-scroll-image="map"] {
+    transform: none;
+  }
 }
