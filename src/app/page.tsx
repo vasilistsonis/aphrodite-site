@@ -181,7 +181,7 @@ const C2_DESC = `Three Levels of Spacious, Exclusive Living
 
 3rd Floor: three master bedrooms with generous closets and natural light; auxiliary spaces; two independent entrances; private internal lift.
 Mezzanine: expansive living & entertaining hub; open-plan kitchen with premium appliances and pantry; guest WC.
-Rooftop (Exclusive Use): planted area of 124.80 m² with a 12.95 m² pool and WC. Private balconies total 57.05 m².`;
+Rooftop (Exclusive Use): planted area of 124.80 m² with a 12.95 m² pool and WC. Private balconies total 57.05 m². Includes 2 indoor parking spaces and a 59.00 m² maid’s room.`;
 
 const C2: Apt = {
   key: "C2",
@@ -195,12 +195,12 @@ const C2: Apt = {
     },
     {
       name: "C2 (4) — Mezzanine (Living & Kitchen)",
-      planImage: pick("page28img1"),
+      planImage: pick("page29img1"),
       info: ["Living & dining", "Open-plan kitchen + pantry", "Guest WC"],
     },
     {
       name: "C2 (5) — Rooftop (Exclusive Use)",
-      planImage: pick("page28img1"),
+      planImage: pick("page30img1"),
       info: ["Planted area 124.80 m²", "Pool 12.95 m²", "Rooftop WC"],
     },
   ],
@@ -708,6 +708,12 @@ export default function Page() {
             <div><div className="text-xs opacity-80">AIRPORT</div><div className="font-semibold">~20 min</div></div>
             <div><div className="text-xs opacity-80">PIRAEUS</div><div className="font-semibold">~25 min</div></div>
           </div>
+          <div className="mt-4 grid grid-cols-2 gap-3 text-white/85 md:grid-cols-4">
+            <div><div className="text-xs opacity-80">VOULA PARK</div><div className="font-semibold">500 m</div></div>
+            <div><div className="text-xs opacity-80">STADIUM</div><div className="font-semibold">550 m</div></div>
+            <div><div className="text-xs opacity-80">GLYFADA</div><div className="font-semibold">2.5 km</div></div>
+            <div><div className="text-xs opacity-80">ELLINIKON</div><div className="font-semibold">7 km</div></div>
+          </div>
         </div>
       </Container>
     </div>
@@ -725,7 +731,7 @@ export default function Page() {
         About the Development
       </h2>
       <p className="mt-4" style={{ color: C.teal }}>
-        Conceived and delivered by <a href="https://www.tolikas.gr/about-us/" target="_blank" rel="noopener noreferrer"><strong>Tolikas Development</strong></a>, Aphrodite Residences represents a new benchmark 
+        Designed by the renowned architectural firm <strong>Omnibus</strong> and constructed by <a href="https://www.tolikas.gr/about-us/" target="_blank" rel="noopener noreferrer"><strong>Tolikas Development</strong></a>, Aphrodite Residences represents a new benchmark 
         in contemporary luxury living. Featuring refined multi-level residences, timeless architecture, and exceptional build quality,
         the development is located in the prestigious neighborhood of <strong>Voula</strong> on the <strong>Athens Riviera </strong> — offering tranquility alongside effortless access to beaches, dining, shopping, and key destinations.
       </p>
