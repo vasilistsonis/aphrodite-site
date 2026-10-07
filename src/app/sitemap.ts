@@ -10,6 +10,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: LAST_MODIFIED,
       changeFrequency: "monthly",
       priority: 1,
+      images: [`${SITE_URL}/fleming/img/ext-night.jpg`],
+    },
+    {
+      url: `${SITE_URL}/fleming`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: "monthly",
+      priority: 0.9,
+      images: [`${SITE_URL}/fleming/img/hero-front.jpg`, `${SITE_URL}/fleming/img/ext-corner.jpg`],
+    },
+    {
+      url: `${SITE_URL}/aphrodite`,
+      lastModified: LAST_MODIFIED,
+      changeFrequency: "monthly",
+      priority: 1,
       images: [
         `${SITE_URL}/images/page01_img1.jpeg`,
         `${SITE_URL}/images/page17_img1.png`,

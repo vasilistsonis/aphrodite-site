@@ -1,33 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FBFAF7;
+  --foreground: #192524;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  scroll-padding-top: 88px;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: #3C5759;
+  color: #ffffff;
 }
 
 input:focus,
@@ -38,20 +36,6 @@ textarea:focus {
 
 button {
   cursor: pointer;
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 700ms ease,
-    transform 700ms ease,
-    box-shadow 250ms ease;
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .media-zoom {
@@ -80,11 +64,6 @@ button {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
   }
 
   .media-zoom:hover,

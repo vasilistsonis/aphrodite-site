@@ -28,6 +28,7 @@ type ContactPayload = {
   email: string;
   phone?: string;
   message: string;
+  project?: string; // which development the enquiry is about
   company?: string; // honeypot
   ts?: string;      // ms timestamp as string
 };
@@ -84,6 +85,7 @@ export async function POST(req: Request) {
     const email   = (body.email || "").trim();
     const phone   = (body.phone || "").trim();
     const message = (body.message || "").trim();
+    const project = (body.project || "").trim().slice(0, 100);
     const company = body.company ? String(body.company) : "";
     const ts      = body.ts ? Number(body.ts) : 0;
 
@@ -108,7 +110,7 @@ export async function POST(req: Request) {
     }
 
     // --- Email content ---
-    const subject = `New inquiry — Aphrodite Residences (${name})`;
+    const subject = `New inquiry — ${project || "Aphrodite Residences"} (${name})`;
     const text = [
       `Name: ${name}`,
       `Email: ${email}`,
